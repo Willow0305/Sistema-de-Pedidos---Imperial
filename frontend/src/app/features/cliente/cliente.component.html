@@ -1,0 +1,58 @@
+﻿<main class="public-shell">
+  <section class="cliente-hero">
+    <img class="logo-xl" src="assets/logo_imperial.png" alt="Escudo Imperial" />
+    <p class="eyebrow">Sistema de Pedidos Imperial</p>
+    <h1>{{ configuracao.nomeEstabelecimento }}</h1>
+    <p>{{ configuracao.mensagemCliente }}</p>
+  </section>
+
+  <form class="card-imperial consulta-card" (ngSubmit)="consultar()">
+    <label for="numeroFicha">Número da ficha</label>
+    <input
+      id="numeroFicha"
+      name="numeroFicha"
+      type="number"
+      inputmode="numeric"
+      min="1"
+      autocomplete="off"
+      [(ngModel)]="numeroFicha"
+      placeholder="Ex: 1"
+    />
+
+    <button type="submit" class="btn-imperial" [disabled]="carregando">
+      {{ carregando ? 'Consultando...' : 'Consultar ficha' }}
+    </button>
+    <p class="form-error" *ngIf="erro">{{ erro }}</p>
+  </form>
+
+  <article class="card-imperial resultado-card" *ngIf="resultado">
+    <ng-container *ngIf="resultado.status; else naoEncontrado">
+      <div class="resultado-topo">
+        <div>
+          <span class="eyebrow">Pedido #{{ resultado.numeroPedido }}</span>
+          <h2>{{ resultado.nomeCliente }}</h2>
+          <p>Ficha {{ resultado.numeroFicha }}</p>
+        </div>
+        <app-status-badge [status]="resultado.status" />
+      </div>
+
+      <p class="mensagem-cliente">{{ resultado.mensagem }}</p>
+
+      <div class="fila" *ngIf="resultado.status !== 'pronto' && resultado.posicaoFila">
+        <span>Posição na fila</span>
+        <strong>{{ resultado.posicaoFila }}</strong>
+        <small>{{ resultado.pedidosNaFrente }} pedido(s) na frente</small>
+      </div>
+
+      <div class="pronto" *ngIf="resultado.status === 'pronto'">
+        {{ resultado.destaque || 'Pode buscar no balcão.' }}
+      </div>
+    </ng-container>
+
+    <ng-template #naoEncontrado>
+      <h2>Pedido não encontrado</h2>
+      <p class="mensagem-cliente">{{ resultado.mensagem }}</p>
+    </ng-template>
+  </article>
+</main>
+

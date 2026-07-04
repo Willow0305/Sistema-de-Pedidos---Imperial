@@ -1,0 +1,108 @@
+<app-imperial-header />
+
+<main class="app-shell">
+  <section class="page-title">
+    <p class="eyebrow">Caixa</p>
+    <h1>Novo pedido</h1>
+  </section>
+
+  <section class="mobile-stats">
+    <span>{{ fichas.livres.length }} livres</span>
+    <span>{{ fichas.ocupadas.length }} ocupadas</span>
+    <span>{{ fichas.quantidadeFichas }} fichas</span>
+  </section>
+
+  <form class="card-imperial order-form" [formGroup]="form" (ngSubmit)="criarPedido()">
+    <div class="form-section">
+      <label for="nomeCliente">Nome do cliente</label>
+      <input
+        id="nomeCliente"
+        type="text"
+        formControlName="nomeCliente"
+        list="nomesClientes"
+        autocomplete="off"
+        placeholder="Ex: João"
+      />
+      <datalist id="nomesClientes">
+        <option *ngFor="let nome of nomesClientes" [value]="nome"></option>
+      </datalist>
+    </div>
+
+    <div class="form-section">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">Ficha</span>
+          <h2>Selecione uma ficha livre</h2>
+        </div>
+        <strong *ngIf="fichaSelecionada">#{{ fichaSelecionada }}</strong>
+      </div>
+      <app-ficha-selector
+        [quantidadeFichas]="fichas.quantidadeFichas"
+        [livres]="fichas.livres"
+        [ocupadas]="fichas.ocupadas"
+        [selected]="fichaSelecionada"
+        (selectedChange)="selecionarFicha($event)"
+      />
+    </div>
+
+    <div class="form-section" formArrayName="itens">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">Itens</span>
+          <h2>Produtos do pedido</h2>
+        </div>
+        <button type="button" class="btn-icon-text" (click)="adicionarItem()">
+          <i-lucide name="plus" aria-hidden="true"></i-lucide>
+          Item
+        </button>
+      </div>
+
+      <div
+        class="item-editor"
+        *ngFor="let item of itens.controls; let i = index"
+        [formGroupName]="i"
+      >
+        <label>
+          Produto
+          <select formControlName="produto">
+            <option value="" disabled>Selecione</option>
+            <option *ngFor="let produto of produtos" [value]="produto.nome">
+              {{ produto.nome }}
+            </option>
+          </select>
+        </label>
+        <label>
+          Qtd.
+          <input type="number" min="1" inputmode="numeric" formControlName="quantidade" />
+        </label>
+        <label class="observacao">
+          Observação
+          <input type="text" formControlName="observacao" placeholder="Sem cebola" />
+        </label>
+        <button type="button" class="btn-danger icon-only" (click)="removerItem(i)" title="Remover item">
+          <i-lucide name="trash-2" aria-hidden="true"></i-lucide>
+        </button>
+      </div>
+    </div>
+
+    <p class="form-error" *ngIf="erro">{{ erro }}</p>
+    <p class="form-success" *ngIf="sucesso">{{ sucesso }}</p>
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="limparFormulario()">
+        <i-lucide name="rotate-ccw" aria-hidden="true"></i-lucide>
+        Limpar
+      </button>
+      <button type="submit" class="btn-imperial" [disabled]="enviando">
+        <i-lucide name="save" aria-hidden="true"></i-lucide>
+        {{ enviando ? 'Criando...' : 'Criar pedido' }}
+      </button>
+    </div>
+  </form>
+
+  <section class="card-imperial receipt" *ngIf="ultimoPedido">
+    <span class="eyebrow">Último pedido</span>
+    <h2>#{{ ultimoPedido.numeroPedido }}</h2>
+    <p>{{ ultimoPedido.nomeCliente }} · ficha {{ ultimoPedido.numeroFicha }}</p>
+  </section>
+</main>

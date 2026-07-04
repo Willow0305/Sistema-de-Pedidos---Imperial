@@ -1,0 +1,128 @@
+:host {
+  display: block;
+}
+
+.usuarios-layout {
+  display: grid;
+  gap: 14px;
+}
+
+.user-form,
+.user-list {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+}
+
+select {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  background: #090909;
+  color: var(--cor-branco);
+  padding: 12px 13px;
+  font: inherit;
+  font-weight: 700;
+}
+
+.password-field {
+  position: relative;
+  display: block;
+}
+
+.password-field input {
+  padding-right: 52px;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--cor-branco);
+  cursor: pointer;
+}
+
+.password-toggle:focus-visible {
+  outline: 2px solid var(--cor-vermelho);
+  outline-offset: 2px;
+}
+
+.muted {
+  margin: 0;
+  color: var(--cor-cinza);
+}
+
+.user-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.user-info,
+.user-meta {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.user-info strong,
+.user-info span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-info span,
+.user-meta small {
+  color: var(--cor-cinza);
+}
+
+.user-meta {
+  justify-items: end;
+}
+
+.user-meta b {
+  color: #ffb6b6;
+  font-size: 0.82rem;
+}
+
+.user-meta small.inactive {
+  color: #ff9d9d;
+}
+
+.row-actions {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 860px) {
+  .usuarios-layout {
+    grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
+    align-items: start;
+  }
+
+  .user-row {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+
+  .row-actions {
+    grid-column: auto;
+    grid-template-columns: 44px 44px;
+  }
+}

@@ -1,0 +1,40 @@
+<app-imperial-header />
+
+<main class="app-shell">
+  <section class="page-title">
+    <p class="eyebrow">Produção</p>
+    <h1>Pedidos ativos</h1>
+  </section>
+
+  <section class="segmented" aria-label="Filtro de status">
+    <button type="button" [class.active]="filtro === 'todos'" (click)="setFiltro('todos')">
+      Todos <span>{{ quantidade('todos') }}</span>
+    </button>
+    <button type="button" [class.active]="filtro === 'pendente'" (click)="setFiltro('pendente')">
+      Pendentes <span>{{ quantidade('pendente') }}</span>
+    </button>
+    <button type="button" [class.active]="filtro === 'em_producao'" (click)="setFiltro('em_producao')">
+      Produção <span>{{ quantidade('em_producao') }}</span>
+    </button>
+    <button type="button" [class.active]="filtro === 'pronto'" (click)="setFiltro('pronto')">
+      Prontos <span>{{ quantidade('pronto') }}</span>
+    </button>
+  </section>
+
+  <p class="form-error" *ngIf="erro">{{ erro }}</p>
+
+  <section class="pedido-grid" *ngIf="pedidosFiltrados.length; else vazio">
+    <app-pedido-card
+      *ngFor="let pedido of pedidosFiltrados"
+      [pedido]="pedido"
+      (statusChange)="atualizarStatus(pedido, $event)"
+    />
+  </section>
+
+  <ng-template #vazio>
+    <section class="card-imperial empty-state">
+      <h2>{{ carregando ? 'Carregando pedidos...' : 'Nenhum pedido por aqui' }}</h2>
+      <p *ngIf="!carregando">Novos pedidos aparecem automaticamente.</p>
+    </section>
+  </ng-template>
+</main>

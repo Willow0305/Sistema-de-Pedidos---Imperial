@@ -1,0 +1,40 @@
+<app-imperial-header />
+
+<main class="app-shell">
+  <section class="page-title qr-title">
+    <div>
+      <p class="eyebrow">QR Codes</p>
+      <h1>Acessos do sistema</h1>
+    </div>
+    <button type="button" class="btn-secondary" (click)="imprimir()">
+      <i-lucide name="printer" aria-hidden="true"></i-lucide>
+      Imprimir
+    </button>
+  </section>
+
+  <section class="qr-grid" *ngIf="!carregando; else carregandoTpl">
+    <article class="card-imperial qr-card" *ngFor="let qr of qrcodes">
+      <div class="qr-card-title">
+        <i-lucide name="qr-code" aria-hidden="true"></i-lucide>
+        <div>
+          <h2>{{ qr.titulo }}</h2>
+          <p>{{ qr.uso }}</p>
+        </div>
+      </div>
+
+      <img [src]="qr.dataUrl" [alt]="qr.titulo" />
+      <code>{{ qr.destino }}</code>
+
+      <a class="btn-imperial" [href]="qr.dataUrl" [download]="qr.arquivo">
+        <i-lucide name="download" aria-hidden="true"></i-lucide>
+        Baixar PNG
+      </a>
+    </article>
+  </section>
+
+  <ng-template #carregandoTpl>
+    <section class="card-imperial empty-state">
+      <h2>Gerando QR Codes...</h2>
+    </section>
+  </ng-template>
+</main>

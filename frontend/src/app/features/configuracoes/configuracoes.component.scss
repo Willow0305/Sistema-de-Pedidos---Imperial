@@ -1,0 +1,59 @@
+:host {
+  display: block;
+}
+
+.config-products {
+  display: grid;
+  gap: 14px;
+}
+
+.product-form,
+.product-list {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+}
+
+.product-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.product-row div:first-child {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.product-row strong,
+.product-row span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.product-row span {
+  color: #bfffd2;
+}
+
+.product-row span.inactive {
+  color: #ff9d9d;
+}
+
+.row-actions {
+  display: grid;
+  grid-template-columns: 44px 44px;
+  gap: 8px;
+}
+
+@media (min-width: 860px) {
+  .config-products {
+    grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
+    align-items: start;
+  }
+}

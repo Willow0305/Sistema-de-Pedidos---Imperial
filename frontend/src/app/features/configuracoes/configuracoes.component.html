@@ -1,0 +1,118 @@
+<app-imperial-header />
+
+<main class="app-shell">
+  <section class="page-title">
+    <p class="eyebrow">Configurações</p>
+    <h1>Sistema Imperial</h1>
+  </section>
+
+  <form class="card-imperial settings-form" [formGroup]="form" (ngSubmit)="salvar()">
+    <label>
+      Nome do estabelecimento
+      <input type="text" formControlName="nomeEstabelecimento" />
+    </label>
+
+    <label>
+      Quantidade de fichas
+      <input type="number" min="1" max="999" inputmode="numeric" formControlName="quantidadeFichas" />
+    </label>
+
+    <label>
+      Mensagem da tela do cliente
+      <textarea rows="3" formControlName="mensagemCliente"></textarea>
+    </label>
+
+    <label>
+      Mensagem de pedido pronto
+      <textarea rows="3" formControlName="mensagemPedidoPronto"></textarea>
+    </label>
+
+    <label>
+      Tempo de atualização fallback
+      <input
+        type="number"
+        min="1"
+        inputmode="numeric"
+        formControlName="intervaloAtualizacaoSegundos"
+      />
+    </label>
+
+    <label class="toggle-row">
+      <input type="checkbox" formControlName="caixaPodeConfigurar" />
+      <span>Caixa pode alterar configurações</span>
+    </label>
+
+    <label class="toggle-row">
+      <input type="checkbox" formControlName="exibirPedidosProntosNaProducao" />
+      <span>Exibir pedidos prontos na produção</span>
+    </label>
+
+    <p class="form-error" *ngIf="erro">{{ erro }}</p>
+    <p class="form-success" *ngIf="sucesso">{{ sucesso }}</p>
+
+    <button type="submit" class="btn-imperial" [disabled]="salvando || carregando">
+      <i-lucide name="save" aria-hidden="true"></i-lucide>
+      {{ salvando ? 'Salvando...' : 'Salvar configurações' }}
+    </button>
+  </form>
+
+  <section class="config-products">
+    <form class="card-imperial product-form" [formGroup]="produtoForm" (ngSubmit)="salvarProduto()">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">Produtos</span>
+          <h2>{{ editandoProduto ? 'Editar produto' : 'Adicionar produto' }}</h2>
+        </div>
+        <i-lucide [name]="editandoProduto ? 'pencil' : 'plus'" aria-hidden="true"></i-lucide>
+      </div>
+
+      <label>
+        Nome do produto
+        <input type="text" formControlName="nome" placeholder="Ex: X-Burger" />
+      </label>
+
+      <label class="toggle-row">
+        <input type="checkbox" formControlName="ativo" />
+        <span>Produto ativo</span>
+      </label>
+
+      <p class="form-error" *ngIf="erroProduto">{{ erroProduto }}</p>
+      <p class="form-success" *ngIf="sucessoProduto">{{ sucessoProduto }}</p>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="limparProduto()">
+          <i-lucide name="rotate-ccw" aria-hidden="true"></i-lucide>
+          {{ editandoProduto ? 'Cancelar' : 'Limpar' }}
+        </button>
+        <button type="submit" class="btn-imperial" [disabled]="salvandoProduto">
+          <i-lucide name="save" aria-hidden="true"></i-lucide>
+          {{ salvandoProduto ? 'Salvando...' : editandoProduto ? 'Salvar produto' : 'Adicionar produto' }}
+        </button>
+      </div>
+    </form>
+
+    <section class="card-imperial product-list">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">Cardápio</span>
+          <h2>Produtos cadastrados</h2>
+        </div>
+      </div>
+
+      <article class="product-row" *ngFor="let produto of produtos">
+        <div>
+          <strong>{{ produto.nome }}</strong>
+          <span [class.inactive]="!produto.ativo">{{ produto.ativo ? 'Ativo' : 'Inativo / esgotado' }}</span>
+        </div>
+        <div class="row-actions">
+          <button type="button" class="btn-secondary icon-only" (click)="editarProduto(produto)" title="Editar produto">
+            <i-lucide name="pencil" aria-hidden="true"></i-lucide>
+          </button>
+          <button type="button" class="btn-danger icon-only" (click)="excluirProduto(produto)" title="Excluir produto">
+            <i-lucide name="trash-2" aria-hidden="true"></i-lucide>
+          </button>
+        </div>
+      </article>
+    </section>
+  </section>
+</main>

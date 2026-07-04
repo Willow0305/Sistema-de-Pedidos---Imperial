@@ -1,0 +1,133 @@
+<app-imperial-header />
+
+<main class="app-shell">
+  <section class="page-title">
+    <p class="eyebrow">Administração</p>
+    <h1>Usuários</h1>
+  </section>
+
+  <section class="usuarios-layout">
+    <form class="card-imperial user-form" [formGroup]="form" (ngSubmit)="salvar()">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">{{ editando ? 'Editar' : 'Adicionar' }}</span>
+          <h2>{{ editando ? 'Editar usuário' : 'Novo usuário' }}</h2>
+        </div>
+        <i-lucide [name]="editando ? 'save' : 'user-plus'" aria-hidden="true"></i-lucide>
+      </div>
+
+      <label>
+        Nome
+        <input type="text" formControlName="nome" autocomplete="name" placeholder="Ex: Caixa 1" />
+      </label>
+
+      <label>
+        Login
+        <input type="text" formControlName="username" autocomplete="username" placeholder="ex: caixa1" />
+      </label>
+
+      <label>
+        {{ editando ? 'Nova senha' : 'Senha' }}
+        <span class="password-field">
+          <input
+            [type]="senhaVisivel ? 'text' : 'password'"
+            formControlName="password"
+            autocomplete="new-password"
+            [placeholder]="editando ? 'deixe em branco para manter' : 'mínimo 8 caracteres'"
+          />
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="alternarSenhaVisivel()"
+            [attr.aria-label]="senhaVisivel ? 'Ocultar senha' : 'Mostrar senha'"
+            [title]="senhaVisivel ? 'Ocultar senha' : 'Mostrar senha'"
+          >
+            <i-lucide [name]="senhaVisivel ? 'eye-off' : 'eye'" aria-hidden="true"></i-lucide>
+          </button>
+        </span>
+      </label>
+
+      <label>
+        Confirmar senha
+        <span class="password-field">
+          <input
+            [type]="senhaVisivel ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            autocomplete="new-password"
+            [placeholder]="editando ? 'repita se trocar a senha' : 'repita a senha'"
+          />
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="alternarSenhaVisivel()"
+            [attr.aria-label]="senhaVisivel ? 'Ocultar senha' : 'Mostrar senha'"
+            [title]="senhaVisivel ? 'Ocultar senha' : 'Mostrar senha'"
+          >
+            <i-lucide [name]="senhaVisivel ? 'eye-off' : 'eye'" aria-hidden="true"></i-lucide>
+          </button>
+        </span>
+      </label>
+
+      <label>
+        Perfil
+        <select formControlName="perfil">
+          <option *ngFor="let perfil of perfis" [value]="perfil">{{ perfil }}</option>
+        </select>
+      </label>
+
+      <label class="toggle-row">
+        <input type="checkbox" formControlName="ativo" />
+        <span>Usuário ativo</span>
+      </label>
+
+      <p class="form-error" *ngIf="erro">{{ erro }}</p>
+      <p class="form-success" *ngIf="sucesso">{{ sucesso }}</p>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="limpar()">
+          <i-lucide name="rotate-ccw" aria-hidden="true"></i-lucide>
+          {{ editando ? 'Cancelar' : 'Limpar' }}
+        </button>
+        <button type="submit" class="btn-imperial" [disabled]="salvando">
+          <i-lucide [name]="editando ? 'save' : 'user-plus'" aria-hidden="true"></i-lucide>
+          {{ salvando ? 'Salvando...' : editando ? 'Salvar edição' : 'Adicionar usuário' }}
+        </button>
+      </div>
+    </form>
+
+    <section class="card-imperial user-list">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">Equipe</span>
+          <h2>Gerenciar usuários</h2>
+        </div>
+        <i-lucide name="users" aria-hidden="true"></i-lucide>
+      </div>
+
+      <p class="muted" *ngIf="carregando">Carregando usuários...</p>
+
+      <article class="user-row" *ngFor="let usuario of usuarios">
+        <div class="user-info">
+          <strong>{{ usuario.nome }}</strong>
+          <span>{{ usuario.username }}</span>
+        </div>
+
+        <div class="user-meta">
+          <b>{{ usuario.perfil }}</b>
+          <small [class.inactive]="usuario.ativo === false">
+            {{ usuario.ativo === false ? 'Inativo' : 'Ativo' }}
+          </small>
+        </div>
+
+        <div class="row-actions">
+          <button type="button" class="btn-secondary icon-only" (click)="editar(usuario)" title="Editar usuário">
+            <i-lucide name="settings" aria-hidden="true"></i-lucide>
+          </button>
+          <button type="button" class="btn-danger icon-only" (click)="excluir(usuario)" title="Excluir usuário">
+            <i-lucide name="trash-2" aria-hidden="true"></i-lucide>
+          </button>
+        </div>
+      </article>
+    </section>
+  </section>
+</main>
