@@ -148,3 +148,71 @@ A tela gera:
 - A ficha só libera em `entregue` ou `cancelado`.
 - A quantidade de fichas é configurável e não pode ser reduzida abaixo de fichas ocupadas.
 - O WebSocket interno fica em `/ws/pedidos/` e exige token.
+
+## Publicação gratuita com GitHub
+
+O GitHub Pages publica somente o frontend Angular. O backend Django, o PostgreSQL e o WebSocket precisam ficar em outro serviço de hospedagem conectado ao repositório do GitHub.
+
+### 1. Publicar o backend
+
+Hospede o backend em um serviço que suporte Python/ASGI, PostgreSQL e WebSocket.
+
+Comandos de produção esperados:
+
+```bash
+python manage.py migrate
+python manage.py collectstatic --noinput
+daphne imperial_api.asgi:application --bind 0.0.0.0 --port $PORT
+```
+
+Variáveis de ambiente mínimas do backend:
+
+```env
+DEBUG=False
+SECRET_KEY=troque-por-uma-chave-segura
+ALLOWED_HOSTS=URL_DO_BACKEND_SEM_HTTPS
+CORS_ALLOWED_ORIGINS=https://USUARIO.github.io
+CSRF_TRUSTED_ORIGINS=https://URL_DO_BACKEND,https://USUARIO.github.io
+POSTGRES_DB=...
+POSTGRES_USER=...
+POSTGRES_PASSWORD=...
+POSTGRES_HOST=...
+POSTGRES_PORT=5432
+```
+
+Se o frontend ficar em um repositório de projeto, use a origem completa:
+
+```env
+CORS_ALLOWED_ORIGINS=https://USUARIO.github.io/NOME_DO_REPOSITORIO
+```
+
+### 2. Configurar os secrets do GitHub
+
+No repositório do GitHub, abra:
+
+```txt
+Settings > Secrets and variables > Actions > New repository secret
+```
+
+Crie:
+
+```txt
+API_BASE_URL=https://URL_DO_BACKEND/api
+WS_BASE_URL=wss://URL_DO_BACKEND
+```
+
+### 3. Ativar GitHub Pages
+
+No repositório do GitHub, abra:
+
+```txt
+Settings > Pages
+```
+
+Em `Build and deployment`, selecione:
+
+```txt
+Source: GitHub Actions
+```
+
+Depois faça push para `main` ou `master`. O workflow `.github/workflows/deploy-frontend.yml` vai instalar, compilar e publicar o Angular automaticamente.

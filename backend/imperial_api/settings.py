@@ -117,6 +117,14 @@ CORS_ALLOWED_ORIGINS = [
     if origin.strip()
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
+    if origin.strip()
+]
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels.layers.InMemoryChannelLayer",
