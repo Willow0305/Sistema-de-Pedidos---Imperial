@@ -26,7 +26,7 @@ export class WebsocketService {
       try {
         this.eventosSubject.next(JSON.parse(event.data) as PedidoEvento);
       } catch {
-        // Eventos invalidos sao ignorados para manter a tela operacional.
+        // Eventos inválidos são ignorados para manter a tela operacional.
       }
     };
 

@@ -44,12 +44,12 @@ def resumo_fichas() -> dict:
 
 def mensagem_por_status(pedido: Pedido, configuracao: ConfiguracaoSistema) -> str:
     mensagens = {
-        Pedido.PENDENTE: "Seu pedido foi recebido e estÃ¡ aguardando produÃ§Ã£o.",
-        Pedido.EM_PRODUCAO: "Seu pedido estÃ¡ em produÃ§Ã£o.",
+        Pedido.PENDENTE: "Seu pedido foi recebido e está aguardando produção.",
+        Pedido.EM_PRODUCAO: "Seu pedido está em produção.",
         Pedido.PRONTO: configuracao.mensagem_pedido_pronto,
-        Pedido.ENTREGUE: "Seu pedido jÃ¡ foi entregue.",
+        Pedido.ENTREGUE: "Seu pedido já foi entregue.",
         Pedido.CANCELADO: (
-            "Este pedido foi cancelado. Procure o caixa para mais informaÃ§Ãµes."
+            "Este pedido foi cancelado. Procure o caixa para mais informações."
         ),
     }
     return mensagens.get(pedido.status, "")
@@ -114,7 +114,7 @@ class UsuarioAdminDetailAPIView(APIView):
         user = self.get_object(usuario_id)
         if not user:
             return Response(
-                {"detail": "UsuÃ¡rio nÃ£o encontrado."},
+                {"detail": "Usuário não encontrado."},
                 status=status.HTTP_404_NOT_FOUND,
             )
 
@@ -128,13 +128,13 @@ class UsuarioAdminDetailAPIView(APIView):
         user = self.get_object(usuario_id)
         if not user:
             return Response(
-                {"detail": "UsuÃ¡rio nÃ£o encontrado."},
+                {"detail": "Usuário não encontrado."},
                 status=status.HTTP_404_NOT_FOUND,
             )
 
         if user.id == request.user.id:
             return Response(
-                {"detail": "VocÃª nÃ£o pode excluir o usuÃ¡rio que estÃ¡ logado."},
+                {"detail": "Você não pode excluir o usuário que está logado."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -178,7 +178,7 @@ class PublicPedidoAPIView(APIView):
             return Response(
                 {
                     "numeroFicha": numero_ficha,
-                    "mensagem": "Pedido nao encontrado. Confira o numero da ficha.",
+                    "mensagem": "Pedido não encontrado. Confira o número da ficha.",
                 },
                 status=status.HTTP_404_NOT_FOUND,
             )
@@ -264,7 +264,7 @@ class PedidoStatusAPIView(APIView):
             )
             if not pedido:
                 return Response(
-                    {"detail": "Pedido nÃ£o encontrado."},
+                    {"detail": "Pedido não encontrado."},
                     status=status.HTTP_404_NOT_FOUND,
                 )
 
@@ -311,7 +311,7 @@ class ConfiguracaoAPIView(APIView):
         permission = PodeAlterarConfiguracao()
         if not permission.has_permission(request, self):
             return Response(
-                {"detail": "VocÃª nÃ£o tem permissÃ£o para alterar configuraÃ§Ãµes."},
+                {"detail": "Você não tem permissão para alterar configurações."},
                 status=status.HTTP_403_FORBIDDEN,
             )
 
@@ -336,7 +336,7 @@ class ProdutoAPIView(APIView):
         permission = PodeAlterarConfiguracao()
         if not permission.has_permission(request, self):
             return Response(
-                {"detail": "VocÃª nÃ£o tem permissÃ£o para alterar produtos."},
+                {"detail": "Você não tem permissão para alterar produtos."},
                 status=status.HTTP_403_FORBIDDEN,
             )
 
@@ -356,14 +356,14 @@ class ProdutoDetailAPIView(APIView):
         permission = PodeAlterarConfiguracao()
         if not permission.has_permission(request, self):
             return Response(
-                {"detail": "VocÃª nÃ£o tem permissÃ£o para alterar produtos."},
+                {"detail": "Você não tem permissão para alterar produtos."},
                 status=status.HTTP_403_FORBIDDEN,
             )
 
         produto = self.get_object(produto_id)
         if not produto:
             return Response(
-                {"detail": "Produto nÃ£o encontrado."},
+                {"detail": "Produto não encontrado."},
                 status=status.HTTP_404_NOT_FOUND,
             )
 
@@ -376,14 +376,14 @@ class ProdutoDetailAPIView(APIView):
         permission = PodeAlterarConfiguracao()
         if not permission.has_permission(request, self):
             return Response(
-                {"detail": "VocÃª nÃ£o tem permissÃ£o para alterar produtos."},
+                {"detail": "Você não tem permissão para alterar produtos."},
                 status=status.HTTP_403_FORBIDDEN,
             )
 
         produto = self.get_object(produto_id)
         if not produto:
             return Response(
-                {"detail": "Produto nÃ£o encontrado."},
+                {"detail": "Produto não encontrado."},
                 status=status.HTTP_404_NOT_FOUND,
             )
 

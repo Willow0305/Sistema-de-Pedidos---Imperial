@@ -47,7 +47,7 @@ export class ClienteComponent implements OnInit, OnDestroy {
 
   consultar(manual = true): void {
     if (!this.numeroFicha || this.numeroFicha < 1) {
-      this.erro = 'Informe um numero de ficha valido.';
+      this.erro = 'Informe um número de ficha válido.';
       this.resultado = undefined;
       return;
     }
@@ -87,4 +87,3 @@ export class ClienteComponent implements OnInit, OnDestroy {
     this.autoRefresh = timer(segundos * 1000).subscribe(() => this.consultar(false));
   }
 }
-
